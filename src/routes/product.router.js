@@ -9,7 +9,7 @@ import {
   getProductById,
 } from "../manager/products.manager.js";
 
-router.post("/", productValidator, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     console.log(req.body);
     const product = req.body;
