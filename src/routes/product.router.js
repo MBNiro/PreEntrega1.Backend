@@ -8,8 +8,9 @@ import {
   getAllProducts,
   getProductById,
 } from "../manager/products.manager.js";
+import { productValidator } from "../middleware/productValidator.js";
 
-router.post("/", async (req, res) => {
+router.post("/", productValidator, async (req, res) => {
   try {
     console.log(req.body);
     const product = req.body;
@@ -26,7 +27,6 @@ router.get("/", async (req, res) => {
     let limitValue = products.length;
 
     if (req.query.limit) {
-    
       limitValue = parseInt(req.query.limit);
     }
 
@@ -45,7 +45,7 @@ router.get("/:id", async (req, res) => {
     if (product) {
       res.status(200).json(product);
     } else {
-      res.status(400).send("product not found");
+      res.status(400).send("error");
     }
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -59,9 +59,9 @@ router.put("/:id", async (req, res) => {
     const productFile = await getProductById(Number(id));
     if (productFile) {
       await updateProduct(product, Number(id));
-      res.send(`product updated successfully!`);
+      res.send(`product updated`);
     } else {
-      res.status(404).send("product not found");
+      res.status(404).send("error");
     }
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -74,7 +74,7 @@ router.delete("/:id", async (req, res) => {
     const products = await getAllProducts();
     if (products.length > 0) {
       await deleteProductById(Number(id));
-      res.send(`product id: ${id} deleted successfully`);
+      res.send(`product id: ${id} deleted`);
     } else {
       res.send(`product id: ${id} not found`);
     }

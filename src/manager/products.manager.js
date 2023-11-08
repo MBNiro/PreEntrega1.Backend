@@ -1,6 +1,6 @@
 import fs from "fs";
 
-const pathFile ="/fs/products.json";
+const pathFile ="/products.json";
 
 export const getMaxId = async () => {
   let maxId = 0;
